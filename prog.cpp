@@ -6,7 +6,10 @@ class matrix
 {
 	private:
 		template <typename TE> friend matrix<TE> operator+(const matrix<TE>& a, const matrix<TE>& b);
+		template <typename TE> friend matrix<TE> operator*(const matrix<TE>& a, const matrix<TE>& b);
+		template <typename TE> friend matrix<TE> operator-(const matrix<TE>& a, const matrix<TE>& b);
 		template <typename TE> friend ostream& operator<<(ostream &os, const matrix<TE>& x);
+		template <typename TE> int determinent(matrix<TE> m);
 		vector<vector<T>> mat;
 		int N,M;
 
@@ -36,8 +39,11 @@ class matrix
 			N=m.size();
 			M=c;
 		}
+		
+		int determinent(matrix m)
+		{
 
-		T Det(const matrix<T>&x);
+		}
 
 
 };
@@ -56,6 +62,8 @@ ostream& operator<<(ostream &os, const matrix<TE>& d)
 	}
 	return os;
 }
+
+
 template <typename TE>
 matrix<TE> operator+(const matrix<TE>& a, const matrix<TE>& b)
 {
@@ -76,11 +84,52 @@ matrix<TE> operator+(const matrix<TE>& a, const matrix<TE>& b)
 	}
 }
 
-template <class T>
-T Det(const matrix<T>&x)
+template <typename TE>
+matrix<TE> operator-(const matrix<TE>& a, const matrix<TE>& b)
 {
-	return 5;
+	if(a.N!=b.N||a.M!=b.M){
+		cout<<"Cannot add the Matrices...they should be of same order\n";
+		exit(0);
+	}
+	else{
+		matrix<TE>res(a.N,a.M,0);
+		for(int i=0;i<a.N;i++)
+		{
+			for(int j=0;j<a.M;j++)
+			{
+				res.mat[i][j]=a.mat[i][j]-b.mat[i][j];
+			}
+		}
+		return res;
+	}
 }
+
+
+template <typename TE>
+matrix<TE> operator*(const matrix<TE>& a, const matrix<TE>& b)
+{
+	if(a.M!=b.N){
+		cout<<"Multiplication of these Matrices not allowed \n";
+		exit(0);
+	}
+	else{
+		matrix<TE>res(a.N,b.M,0);
+		int i, j, k; 
+    	for (i = 0; i < a.N; i++) 
+    	{	 
+        	for (j = 0; j < b.M; j++) 
+        	{ 
+            	res.mat[i][j] = 0; 
+            	for (k = 0; k < a.M; k++) 
+                	res.mat[i][j] += a.mat[i][k] * b.mat[k][j]; 
+        	} 
+    	}	 
+		return res;
+	}
+}
+
+
+
 int main()
 {
 	matrix<int> a(3,3,1);
@@ -90,6 +139,10 @@ int main()
 	cout<<"Matrix b"<<b<<endl;
 	matrix<int>sum=a+b;
 	cout<<"Sum of the matrices"<<sum<<endl;
-	cout<<"Determinant value of matrix b"<<Det(b)<<endl;
+	matrix<int>diff=a-b;
+	cout<<"Difference of the matrices"<<diff<<endl;
+	matrix<int>prod=a*b;
+	cout<<"Product of the matrices"<<prod<<endl;
 }
 
+// =,-,*,det,inverse ,dot product
