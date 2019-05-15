@@ -1,15 +1,6 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-
-/*
-
-returning *this bad code
-*/ 
-
-
-
-
 template<class T>
 class matrix
 {
@@ -21,7 +12,8 @@ class matrix
 		int N,M;
 
 	public:
-		explicit matrix<T>(int N,int M,T init=0)
+		matrix<T>(): N(0), M(0) {}
+		matrix<T>(int N,int M,T init=0)
 		{
 			this->N=N;
 			this->M=M;
@@ -32,6 +24,7 @@ class matrix
 				fill(mat[i].begin(),mat[i].end(),init);
 			}
 		}
+		
 		matrix<T>(const std::vector<std::vector<T>> &m)
 		{
 			int c=0;
@@ -48,6 +41,10 @@ class matrix
 		}
 		
 		float det();
+		unsigned Rows() const;
+		unsigned Cols() const;
+		matrix<T>& AppendRow(T init=0);
+		matrix<T>& AppendCol(T init=0);
 		bool operator==(const matrix<T>& rhs);
 		matrix<T> operator*(int i);
 		matrix<T>& operator=(const matrix<T>& rhs);
@@ -55,6 +52,38 @@ class matrix
 		matrix<T> operator-(const matrix<T>& rhs);
 
 };
+
+
+template <typename T>
+matrix<T>& matrix<T>::AppendCol(T init)
+{
+	for (unsigned i=0;i<N;i++)
+		mat[i].push_back(init);
+	++M;
+	return *this;
+}
+
+template <typename T>
+unsigned matrix<T>::Rows()const
+{ 
+	return N; 
+}
+
+template <typename T>
+unsigned matrix<T>::Cols()const 
+{ 
+	return M; 
+}
+
+template <typename T>
+matrix<T>& matrix<T>::AppendRow(T init)
+{
+	vector<T> r(M,init);
+	mat.push_back(r);
+	++N;
+	return *this;
+}
+
 
 template <typename TE>
 matrix<TE> operator*(int k,const matrix<TE>& rhs)
@@ -273,6 +302,11 @@ int main()
 	m=3*b;
 	cout<<m<<"\n";
 
-}
+	m.AppendRow(2);
+	cout<<"After appending row\n"<<m;
 
-// inverse ,dot product
+	m.AppendCol(4);
+	cout<<"After appending column\n"<<m;
+	cout<<"\nRows :"<<m.Rows()<<" Cols :"<<m.Cols()<<"\n";
+
+}
