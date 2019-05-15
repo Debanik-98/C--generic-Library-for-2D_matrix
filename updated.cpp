@@ -50,6 +50,8 @@ class matrix
 		matrix<T>& operator=(const matrix<T>& rhs);
 		matrix<T> operator+(const matrix<T>& rhs);
 		matrix<T> operator-(const matrix<T>& rhs);
+		std::vector<T>& operator[](unsigned i) { return mat[i]; }
+		std::vector<T> operator[](unsigned i) const { return mat[i]; }
 
 };
 
@@ -309,4 +311,5 @@ int main()
 	cout<<"After appending column\n"<<m;
 	cout<<"\nRows :"<<m.Rows()<<" Cols :"<<m.Cols()<<"\n";
 
+	cout<<m[1][1];
 }
